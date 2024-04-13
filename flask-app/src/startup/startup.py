@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, make_response, current_app
 import json
-from src import db, Document
+from src import db
 
 
 startups = Blueprint('startup', __name__)
@@ -148,18 +148,18 @@ def create_document(StartupID):
 
 
 @startups.route('/startup/<StartupID>/documents/<docID>', methods=['DELETE'])
-def delete_document(StartupID, docID):
-    current_app.logger.info(f"Request to delete document ID {docID} for StartupID {StartupID}")
+def delete_document(docID):
+    query = 'DELETE FROM Documents WHERE docID = ' + str(docID)
+    current_app.logger.info(query)
 
-    document = Document.query.filter_by(id=docID, startup_id=StartupID).first()
-    
-    if not document:
-        return jsonify({"error": "Document not found"}), 404
-
-    db.session.delete(document)
-    db.session.commit()
-
-    return jsonify({"success": "Document deleted successfully"}), 200
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    column_headers = [x[0] for x in cursor.description]
+    json_data = []
+    the_data = cursor.fetchall()
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+    return jsonify(json_data)
 
 
 
