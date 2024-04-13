@@ -5,7 +5,7 @@ CREATE DATABASE project;
 USE project;
 
 CREATE TABLE VentureCapitalist (
-  VCID INT PRIMARY KEY,
+  VCID INT AUTO_INCREMENT PRIMARY KEY,
   Name VARCHAR(255),
   Industry_Preference VARCHAR(255),
   PortfolioSize INT
@@ -17,7 +17,7 @@ CREATE TABLE industryList (
 );
 
 CREATE TABLE Acquirers (
-  acqID INT PRIMARY KEY,
+  acqID INT AUTO_INCREMENT PRIMARY KEY,
   Name VARCHAR(255),
   Sector VARCHAR(255)
 );
@@ -28,7 +28,7 @@ CREATE TABLE GrowthStageList (
 );
 
 CREATE TABLE Startup (
-  StartupID INT PRIMARY KEY,
+  StartupID INT AUTO_INCREMENT PRIMARY KEY,
   Name VARCHAR(255),
   City VARCHAR(255),
   GrowthStage VARCHAR(255),
@@ -39,7 +39,7 @@ CREATE TABLE Startup (
   FOREIGN KEY (Industry) REFERENCES  industryList(Industry)
 );
 CREATE TABLE Document (
-  docID INT PRIMARY KEY,
+  docID INT AUTO_INCREMENT PRIMARY KEY,
   documentType VARCHAR(255),
   fileSize INT,
   pageCount INT,
@@ -49,7 +49,7 @@ CREATE TABLE Document (
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
 );
 CREATE TABLE InvestmentOpportunities (
-  OppID INT PRIMARY KEY,
+  OppID INT AUTO_INCREMENT PRIMARY KEY,
   FundingRound VARCHAR(255),
   Description TEXT,
   Terms TEXT,
@@ -66,7 +66,7 @@ CREATE TABLE InvestmentOpportunityToVC
 );
 
 CREATE TABLE InvestmentAnalytics (
-  AnalyticsID INT PRIMARY KEY,
+  AnalyticsID INT AUTO_INCREMENT PRIMARY KEY,
   NumberofDeals INT,
   TotalInvested DECIMAL(19, 4),
   PortfolioDiversity DECIMAL(19, 4),
@@ -75,17 +75,8 @@ CREATE TABLE InvestmentAnalytics (
   FOREIGN KEY (VCID) REFERENCES VentureCapitalist(VCID)
 );
 
-
-
-
-
-
-
-
-
-
 CREATE TABLE FinancialMetrics (
-  MetricID INT PRIMARY KEY,
+  MetricID INT AUTO_INCREMENT PRIMARY KEY,
   MetricTitle VARCHAR(255),
   MetricValue DECIMAL(19, 4),
   StartupID INT,
@@ -95,7 +86,7 @@ CREATE TABLE FinancialMetrics (
 
 
 CREATE TABLE TeamMembers (
-  MemberID INT PRIMARY KEY,
+  MemberID INT AUTO_INCREMENT PRIMARY KEY,
   Name VARCHAR(255),
   PhoneNumber VARCHAR(20),
   Email VARCHAR(255),
@@ -105,7 +96,7 @@ CREATE TABLE TeamMembers (
 
 
 CREATE TABLE Founder (
-  FounderID INT PRIMARY KEY,
+  FounderID INT AUTO_INCREMENT PRIMARY KEY,
   Name VARCHAR(255),
   PhoneNumber VARCHAR(20),
   NumberOfCompanies INT,
@@ -118,11 +109,10 @@ CREATE TABLE StartupFounder (
   FounderID INT,
   FOREIGN KEY (FounderID) REFERENCES Founder(FounderID),
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
--- this should link startupfounder to founder but its not updating on the datagrip diagram for some reason
 );
 
 CREATE TABLE AcquisitionTarget (
-  targetID INT PRIMARY KEY,
+  targetID INT AUTO_INCREMENT PRIMARY KEY,
   status VARCHAR(255),
   interested BOOLEAN,
   DateIdentified DATETIME,
@@ -133,7 +123,7 @@ CREATE TABLE AcquisitionTarget (
 );
 
 CREATE TABLE GeneralResearcher (
-  researcherID INT PRIMARY KEY,
+  researcherID INT AUTO_INCREMENT PRIMARY KEY,
   University VARCHAR(255),
   Name VARCHAR(255),
   Interests VARCHAR(255),
@@ -150,7 +140,7 @@ CREATE TABLE GeneralResearcherFollowing (
 );
 
 CREATE TABLE Insights (
-  InsightID INT PRIMARY KEY,
+  InsightID INT AUTO_INCREMENT PRIMARY KEY,
   DateCreated DATETIME,
   Content TEXT,
   Likes INT,
@@ -159,7 +149,7 @@ CREATE TABLE Insights (
 );
 
 CREATE TABLE InsightsComments (
-  commentID INT PRIMARY KEY,
+  commentID INT AUTO_INCREMENT PRIMARY KEY,
   InsightID INT,
   Content TEXT,
   Likes INT,
@@ -170,9 +160,11 @@ CREATE TABLE InsightsComments (
 );
 
 CREATE TABLE FollowedDeals (
-  followedID INT PRIMARY KEY,
+  followedID INT AUTO_INCREMENT PRIMARY KEY,
   FollowerCount INT,
   OppID INT,
-  FOREIGN KEY (OppID) REFERENCES InvestmentOpportunities(OppID)
+  researcherID INT,
+  FOREIGN KEY (OppID) REFERENCES InvestmentOpportunities(OppID),
+  FOREIGN KEY (researcherID) REFERENCES GeneralResearcher(researcherID)
 );
 
