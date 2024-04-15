@@ -111,7 +111,7 @@ def delete_aqctarget(targetID):
 def get_alltargets():
     cursor = db.get_db().cursor()
     query = "select acq.Name AS acquirerName, st.Name AS StartUpName, acq.Status as Status, st.Inudstry, st.GrowthStage"
-    query = " FROM Startup as st JOIN AcuisitionTarget as at on st.StartupID = at.StartupID JOIN Acquirers as acq on"
+    query = " FROM Startup as st JOIN AcquisitionTarget as at on st.StartupID = at.StartupID JOIN Acquirers as acq on "
     query = "acq.acqID = at.acqID"
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]

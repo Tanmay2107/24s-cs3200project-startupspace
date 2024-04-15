@@ -1,4 +1,3 @@
-DROP DATABASE project;
 
 CREATE DATABASE project;
 
