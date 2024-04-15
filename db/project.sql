@@ -20,7 +20,7 @@ CREATE TABLE Acquirers (
   Sector VARCHAR(255)
 );
 
-CREATE TABLE GrowthStageList (
+CREATE TABLE GrowthStageList ( -- What is this column for?
     growthStage VARCHAR(255),
     PRIMARY KEY (growthStage)
 );
@@ -36,6 +36,7 @@ CREATE TABLE Startup (
   FOREIGN KEY (GrowthStage) REFERENCES GrowthStageList(growthStage),
   FOREIGN KEY (Industry) REFERENCES  industryList(Industry)
 );
+
 CREATE TABLE Document (
   docID INT AUTO_INCREMENT PRIMARY KEY,
   documentType VARCHAR(255),
@@ -46,6 +47,7 @@ CREATE TABLE Document (
   StartupID INT,
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
 );
+
 CREATE TABLE InvestmentOpportunities (
   OppID INT AUTO_INCREMENT PRIMARY KEY,
   FundingRound VARCHAR(255),
@@ -54,8 +56,8 @@ CREATE TABLE InvestmentOpportunities (
   StartupID INT,
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
 );
-CREATE TABLE InvestmentOpportunityToVC
-(
+
+CREATE TABLE InvestmentOpportunityToVC (
     VCID  INT,
     OppID INT,
     PRIMARY KEY (VCID, OppID),
@@ -66,17 +68,18 @@ CREATE TABLE InvestmentOpportunityToVC
 CREATE TABLE InvestmentAnalytics (
   AnalyticsID INT AUTO_INCREMENT PRIMARY KEY,
   NumberofDeals INT,
-  TotalInvested DECIMAL(19, 4),
-  PortfolioDiversity DECIMAL(19, 4),
-  PerformanceMetric DECIMAL(19, 4),
+  TotalInvested DECIMAL(19, 2),
+  PortfolioDiversity DECIMAL(19, 2),
+  PerformanceMetric DECIMAL(19, 2),
   VCID INT,
   FOREIGN KEY (VCID) REFERENCES VentureCapitalist(VCID)
 );
 
+
 CREATE TABLE FinancialMetrics (
   MetricID INT AUTO_INCREMENT PRIMARY KEY,
   MetricTitle VARCHAR(255),
-  MetricValue DECIMAL(19, 4),
+  MetricValue DECIMAL(19, 2),
   StartupID INT,
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
 );
@@ -98,13 +101,14 @@ CREATE TABLE Founder (
   Name VARCHAR(255),
   PhoneNumber VARCHAR(20),
   NumberOfCompanies INT,
-  CredibilityRanking DECIMAL(19, 4)
+  CredibilityRanking DECIMAL(19, 2)
 
 );
 
 CREATE TABLE StartupFounder (
   StartupID INT,
   FounderID INT,
+  PRIMARY KEY(StartupID, FounderID), 
   FOREIGN KEY (FounderID) REFERENCES Founder(FounderID),
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
 );
@@ -165,4 +169,6 @@ CREATE TABLE FollowedDeals (
   FOREIGN KEY (OppID) REFERENCES InvestmentOpportunities(OppID),
   FOREIGN KEY (researcherID) REFERENCES GeneralResearcher(researcherID)
 );
+
+-- INSERT STATEMENTS BELOW
 
