@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 from src import db
 
-services = Blueprint('investment_services', __name__)
+services = Blueprint('services', __name__)
 
 # Get investment pipeline analytics for a specific VC
 @services.route('/investmentAnalytics/<analytics_id>', methods=['GET'])

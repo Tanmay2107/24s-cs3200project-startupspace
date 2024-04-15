@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 from src import db
 
-tracking = Blueprint('investment_tracking', __name__)
+tracking = Blueprint('tracking', __name__)
 
 # Financial Metrics Routes
 # Get all financial metrics for a given startup
