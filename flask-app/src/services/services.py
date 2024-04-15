@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify, make_response
 from src import db
 
-investment_services = Blueprint('investment_services', __name__)
+services = Blueprint('investment_services', __name__)
 
 # Get investment pipeline analytics for a specific VC
-@investment_services.route('/investmentAnalytics/<analytics_id>', methods=['GET'])
+@services.route('/investmentAnalytics/<analytics_id>', methods=['GET'])
 def get_investment_analytics(analytics_id):
     cursor = db.get_db().cursor()
     cursor.execute('SELECT * FROM InvestmentAnalytics WHERE AnalyticsID = %s', (analytics_id,))
@@ -21,7 +21,7 @@ def get_investment_analytics(analytics_id):
     return the_response
 
 # Update a given VC’s investment analytics
-@investment_services.route('/investmentAnalytics/<analytics_id>', methods=['PUT'])
+@services.route('/investmentAnalytics/<analytics_id>', methods=['PUT'])
 def update_investment_analytics(analytics_id):
     the_data = request.json
     query = 'UPDATE InvestmentAnalytics SET '
@@ -52,7 +52,7 @@ def update_investment_analytics(analytics_id):
     return jsonify({'message': 'Investment analytics updated successfully'}), 200
 
 # Retrieves details for a specific investment opportunity
-@investment_services.route('/investmentOpportunities/<opp_id>', methods=['GET'])
+@services.route('/investmentOpportunities/<opp_id>', methods=['GET'])
 def get_investment_opportunity(opp_id):
     cursor = db.get_db().cursor()
     cursor.execute('SELECT * FROM InvestmentOpportunities WHERE OppID = %s', (opp_id,))
@@ -67,7 +67,7 @@ def get_investment_opportunity(opp_id):
     return response
 
 # Add a new investment opportunity
-@investment_services.route('/investmentOpportunities', methods=['POST'])
+@services.route('/investmentOpportunities', methods=['POST'])
 def add_investment_opportunity():
     the_data = request.json
     funding_round = the_data.get('FundingRound')
@@ -81,7 +81,7 @@ def add_investment_opportunity():
     return make_response(jsonify({'message': 'Investment opportunity added successfully'}), 201)
 
 # Update details for a given investment opportunity
-@investment_services.route('/investmentOpportunities/<opp_id>', methods=['PUT'])
+@services.route('/investmentOpportunities/<opp_id>', methods=['PUT'])
 def update_investment_opportunity(opp_id):
     the_data = request.json
     funding_round = the_data.get('FundingRound')
@@ -95,7 +95,7 @@ def update_investment_opportunity(opp_id):
     return make_response(jsonify({'message': 'Investment opportunity updated successfully'}), 200)
 
 # Delete an opportunity from the tracker
-@investment_services.route('/investmentOpportunities/<opp_id>', methods=['DELETE'])
+@services.route('/investmentOpportunities/<opp_id>', methods=['DELETE'])
 def delete_investment_opportunity(opp_id):
     cursor = db.get_db().cursor()
     cursor.execute('DELETE FROM InvestmentOpportunities WHERE OppID = %s', (opp_id,))

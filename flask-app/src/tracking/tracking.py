@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify, make_response
 from src import db
 
-investment_tracking = Blueprint('investment_tracking', __name__)
+tracking = Blueprint('investment_tracking', __name__)
 
 # Financial Metrics Routes
 # Get all financial metrics for a given startup
-@investment_tracking.route('/financialMetrics/<startup_id>', methods=['GET'])
+@tracking.route('/financialMetrics/<startup_id>', methods=['GET'])
 def get_financial_metrics(startup_id):
     cursor = db.get_db().cursor()
     cursor.execute('SELECT * FROM financial_metrics WHERE startup_id = %s', (startup_id,))
@@ -20,7 +20,7 @@ def get_financial_metrics(startup_id):
     return the_response
 
 # Add new financial metrics for a given startup
-@investment_tracking.route('/financialMetrics/<startup_id>', methods=['POST'])
+@tracking.route('/financialMetrics/<startup_id>', methods=['POST'])
 def add_financial_metrics(startup_id):
     the_data = request.json
     metric_name = the_data['metric_name']
@@ -32,7 +32,7 @@ def add_financial_metrics(startup_id):
     return 'Success!', 201
 
 # Update existing financial metrics for a given startup
-@investment_tracking.route('/financialMetrics/<startup_id>', methods=['PUT'])
+@tracking.route('/financialMetrics/<startup_id>', methods=['PUT'])
 def update_financial_metrics(startup_id):
     the_data = request.json
     metric_id = the_data['metric_id']
@@ -45,7 +45,7 @@ def update_financial_metrics(startup_id):
     return 'Update successful!', 200
 
 # Delete the financial metrics for a given startup
-@investment_tracking.route('/financialMetrics/<startup_id>', methods=['DELETE'])
+@tracking.route('/financialMetrics/<startup_id>', methods=['DELETE'])
 def delete_financial_metrics(startup_id):
     cursor = db.get_db().cursor()
     cursor.execute('DELETE FROM financial_metrics WHERE startup_id = %s', (startup_id,))
@@ -54,7 +54,7 @@ def delete_financial_metrics(startup_id):
 
 # Followed Deals Routes
 # Get a list of a general researcher’s followed deals
-@investment_tracking.route('/followedDeals/<researcher_id>', methods=['GET'])
+@tracking.route('/followedDeals/<researcher_id>', methods=['GET'])
 def get_followed_deals(researcher_id):
     cursor = db.get_db().cursor()
     cursor.execute('SELECT * FROM FollowedDeals WHERE GeneralResearcherID = %s', (researcher_id,))
@@ -69,7 +69,7 @@ def get_followed_deals(researcher_id):
     return the_response
 
 # Follow a new deal for a given general researcher
-@investment_tracking.route('/followedDeals/<researcher_id>', methods=['POST'])
+@tracking.route('/followedDeals/<researcher_id>', methods=['POST'])
 def follow_deal(researcher_id):
     the_data = request.json
     deal_id = the_data['deal_id']
