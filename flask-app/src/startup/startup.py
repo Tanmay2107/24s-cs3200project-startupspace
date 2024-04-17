@@ -11,8 +11,8 @@ def get_startup():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    # use cursor to query the database for a list of products
-    cursor.execute('SELECT name FROM Startup')
+
+    cursor.execute('SELECT * FROM Startup')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
