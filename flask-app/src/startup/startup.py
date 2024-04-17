@@ -31,6 +31,8 @@ def get_startup():
 
     return jsonify(json_data)
 
+
+
 @startup.route('/startup', methods=['POST'])
 def create_startup():
     # collecting data from the request object 
@@ -64,7 +66,7 @@ def create_startup():
 
 
 @startup.route('/startup/<StartupID>', methods=['GET'])
-def get_startup_detail (id):
+def get_startup_detail(id):
 
     query = 'SELECT StartupID, Name, City, GrowthStage, Industry, acqID FROM products WHERE StartupID = ' + str(id)
     current_app.logger.info(query)
@@ -205,7 +207,7 @@ def get_invOpps(StartupID, OppID):
 
 @startup.route('/startup/<StartupID>/teamMembers', methods=['GET'])
 def getTeamMembers(StartupID):
-    query = 'SELECT * FROM TeamMembers WHERE StartupID = ' + str(id)
+    query = 'SELECT * FROM TeamMembers WHERE StartupID = ' + str(StartupID)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
