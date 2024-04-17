@@ -127,3 +127,11 @@ def get_VCID():
 
     return jsonify(json_data)
 
+@services.route('/vc', methods=['GET'])
+def get_VC_by_ID():
+    VCID = request.args.get('VCID', default=1, type=int)  # default to 1 if VCID is not provided
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM VentureCapitalist WHERE VCID=%s', (VCID,))
+    column_headers = [x[0] for x in cursor.description]
+    json_data = [dict(zip(column_headers, row)) for row in cursor.fetchall()]
+    return jsonify(json_data)

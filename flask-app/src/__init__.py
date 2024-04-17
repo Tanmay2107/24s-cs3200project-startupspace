@@ -38,14 +38,14 @@ def create_app():
     from src.services.services import services
     from src.tracking.tracking  import tracking
     from src.startup.startup  import startup
-
+    from src.insights.insights import insights
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each
     app.register_blueprint(services,   url_prefix='/se')
     app.register_blueprint(tracking,    url_prefix='/t')
     app.register_blueprint(startup,    url_prefix='/s')
     app.register_blueprint(acquisitionTarget,    url_prefix='/at')
-
+    #app.register_blueprint(insights, url_prefix="/in")
 
     # Don't forget to return the app object
     return app
