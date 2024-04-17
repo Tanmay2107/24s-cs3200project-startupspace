@@ -11,7 +11,7 @@ def get_aqctargets(acqid):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    query = 'SELECT at.acqID, s.Name, s.StartupID, at.DateIdentified, at.status  FROM  AcquisitionTarget as at JOIN Startup as s  WHERE at.acqID = ' + str(acqid)
+    query = 'SELECT at.acqID, s.Name, s.StartupID, at.DateIdentified, at.status  FROM  AcquisitionTarget as at JOIN Startup as s WHERE at.acqID = ' + str(acqid)
 
     # use cursor to query the database for a list of targets
     cursor.execute(query)
@@ -110,9 +110,9 @@ def delete_aqctarget(targetID):
 @acquisitionTarget.route('/acquisitionTarget', methods=['GET'])
 def get_alltargets():
     cursor = db.get_db().cursor()
-    query = "select acq.Name AS acquirerName, st.Name AS StartUpName, acq.Status as Status, st.Inudstry, st.GrowthStage"
-    query = " FROM Startup as st JOIN AcquisitionTarget as at on st.StartupID = at.StartupID JOIN Acquirers as acq on "
-    query = "acq.acqID = at.acqID"
+    query = "select acq.Name AS acquirerName, st.Name AS StartUpName, at.status as Status, st.Industry, st.GrowthStage"
+    query += " FROM Startup as st JOIN AcquisitionTarget as at on st.StartupID = at.StartupID JOIN Acquirers as acq on "
+    query += "acq.acqID = at.acqID"
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
