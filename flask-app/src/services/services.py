@@ -1,13 +1,16 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, abort, current_app
 from src import db
 
 services = Blueprint('services', __name__)
 
 # Get investment pipeline analytics for a specific VC
-@services.route('/investmentAnalytics/<analytics_id>', methods=['GET'])
-def get_investment_analytics(analytics_id):
+@services.route('/investmentAnalytics', methods=['GET'])
+def get_investment_analytics():
+    VCID = request.args.get('VCID', type=int)
+    if VCID is None:
+        return "VCID is " + str(VCID), 400
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT * FROM InvestmentAnalytics WHERE AnalyticsID = %s', (analytics_id,))
+    cursor.execute('SELECT * FROM InvestmentAnalytics WHERE VCID = %s', (VCID,))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -135,3 +138,61 @@ def get_VC_by_ID():
     column_headers = [x[0] for x in cursor.description]
     json_data = [dict(zip(column_headers, row)) for row in cursor.fetchall()]
     return jsonify(json_data)
+
+@services.route('/vc/investment-opportunities', methods=['GET'])
+def get_investment_opportunities():
+    vcid = request.args.get('VCID', type=int)
+    if vcid is None:
+        return "VCID is " + str(vcid), 400
+
+    
+    cur = db.get_db().cursor()
+    
+    # Execute the query
+    cur.execute("SELECT InvestmentOpportunities.* FROM InvestmentOpportunities JOIN InvestmentOpportunityToVC ON InvestmentOpportunities.OppID = InvestmentOpportunityToVC.OppID WHERE InvestmentOpportunityToVC.VCID = %s", (vcid,))
+    
+    # Fetch all rows from the database
+    opportunities = cur.fetchall()
+    
+    # Generate column headers
+    column_headers = [desc[0] for desc in cur.description]
+
+    # Create a list of dictionaries, each representing a row from the results
+    result = [dict(zip(column_headers, opportunity)) for opportunity in opportunities]
+    
+    return jsonify(result)
+
+
+@services.route('/link', methods=['POST'])
+def link_startup_to_vc():
+    data = request.get_json()  # This will automatically parse the JSON body
+    current_app.logger.info(f"Received data: {data}")
+    startup_id = data.get('StartupID')
+    vcid = data.get('VCID')
+    if not startup_id or not isinstance(startup_id, int):
+        abort(400, 'StartupID must be provided and must be an integer')
+
+    if not vcid or not isinstance(vcid, int):
+        abort(400, 'VCID must be provided and must be an integer')
+
+    try:
+        startup_id = int(data.get('StartupID'))
+    except (ValueError, TypeError):
+        abort(400, 'StartupID must be an integer')
+
+    cur = db.get_db().cursor()
+
+    
+    # Insert into InvestmentOpportunities and get the OppID
+    cur.execute(
+            "INSERT INTO InvestmentOpportunities (Description, Terms, StartupID) VALUES (%s, %s, %s)",
+            ('', '', startup_id)  # Replace with actual values or variables as needed
+        )
+    opp_id = cur.lastrowid
+    
+    # Now, link this OppID with the VCID in InvestmentOpportunityToVC
+    cur.execute(
+        "INSERT INTO InvestmentOpportunityToVC (VCID, OppID) VALUES (%s, %s);",
+        (vcid, opp_id)
+    )    
+    return jsonify({'success': True, 'message': 'Startup linked to VC successfully', 'OppID': opp_id}), 201
