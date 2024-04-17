@@ -151,7 +151,7 @@ def link_startup_to_vc():
         abort(400, 'StartupID must be an integer')
 
     cur = db.get_db().cursor()
-
+    dataBase = db.get_db()
     
     # Insert into InvestmentOpportunities and get the OppID
     cur.execute(
@@ -165,6 +165,7 @@ def link_startup_to_vc():
         "INSERT INTO InvestmentOpportunityToVC (VCID, OppID) VALUES (%s, %s);",
         (vcid, opp_id)
     )    
+    dataBase.commit()
     return jsonify({'success': True, 'message': 'Startup linked to VC successfully', 'OppID': opp_id, 'vcid': vcid}), 201
 
 
