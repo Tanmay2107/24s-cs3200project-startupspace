@@ -17,7 +17,7 @@ def get_insights():
 @insights.route('/insights/<int:InsightID>/comments', methods=['GET'])
 def get_comments(InsightID):
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT * FROM Comments WHERE InsightID = %s', (InsightID,))
+    cursor.execute('SELECT * FROM InsightsComments WHERE InsightID = %s', (InsightID,))
     column_headers = [x[0] for x in cursor.description]
     json_data = [dict(zip(column_headers, row)) for row in cursor.fetchall()] if cursor.rowcount > 0 else ('', 404)
     return jsonify(json_data)
