@@ -117,7 +117,7 @@ CREATE TABLE AcquisitionTarget (
   targetID INT AUTO_INCREMENT PRIMARY KEY,
   status VARCHAR(255),
   interested BOOLEAN,
-  DateIdentified DATETIME,
+  DateIdentified DATETIME DEFAULT CURRENT_TIMESTAMP,
   StartupID INT,
   acqID INT,
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID),
@@ -135,7 +135,7 @@ CREATE TABLE GeneralResearcher (
 CREATE TABLE GeneralResearcherFollowing (
   researcherID INT,
   StartupID INT,
-  DateCreated DATETIME,
+  DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (researcherID, StartupID),
   FOREIGN KEY (researcherID) REFERENCES GeneralResearcher(researcherID),
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
@@ -143,7 +143,7 @@ CREATE TABLE GeneralResearcherFollowing (
 
 CREATE TABLE Insights (
   InsightID INT AUTO_INCREMENT PRIMARY KEY,
-  DateCreated DATETIME,
+  DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
   Content TEXT,
   Likes INT,
   GeneralResearcher INT,
