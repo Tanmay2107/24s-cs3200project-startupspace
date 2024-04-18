@@ -11,7 +11,35 @@ def get_aqctargets(acqid):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    query = 'SELECT at.acqID, s.Name, s.StartupID, at.DateIdentified, at.status  FROM  AcquisitionTarget as at JOIN Startup as s WHERE at.acqID = ' + str(acqid)
+    query = 'SELECT at.acqID, s.Name, s.StartupID, at.DateIdentified, at.status, s.GrowthStage, s.Industry FROM  AcquisitionTarget as at JOIN Startup as s WHERE at.acqID = ' + str(acqid)
+
+    # use cursor to query the database for a list of targets
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Get list of Acquirer IDs
+@acquisitionTarget.route('/Acquirers', methods=['GET'])
+def get_acqids():
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    query = 'SELECT acqID FROM Acquirers'
 
     # use cursor to query the database for a list of targets
     cursor.execute(query)
@@ -34,7 +62,7 @@ def get_aqctargets(acqid):
     return jsonify(json_data)
 
 # Add a new acquisitionTarget
-@acquisitionTarget.route('/acquisitionTarget/<acqID>', methods=['PUT'])
+@acquisitionTarget.route('/acquisitionTarget/<acqid>', methods=['POST'])
 def add_acqtargets(acqid):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
@@ -44,13 +72,11 @@ def add_acqtargets(acqid):
     acqID = str(acqid)
     interested = "true"
 
-
-
     query = "INSERT INTO AcquisitionTarget(status,StartupID,interested,acqID)"
     query = query + "VALUES ("
-    query = query + "'" + status + "'"
-    query = query + "'" + StartupID + "'"
-    query = query + "'" + interested + "'"
+    query = query + "'" + status + "',"
+    query = query + "'" + StartupID + "',"
+    query = query + "" + interested + ","
     query = query + "'" + acqID + "'"
     query = query + ")"
 
@@ -88,7 +114,7 @@ def update_aqctargets(targetID):
 
 
 # delete a target
-@acquisitionTarget.route('/acquisitionTarget/<targetID>', methods=['DELETE'])
+@acquisitionTarget.route('/AcquisitionTarget/<targetID>', methods=['DELETE'])
 def delete_aqctarget(targetID):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
@@ -107,7 +133,7 @@ def delete_aqctarget(targetID):
     return 'Success!'
 
 #gets all the acquisition targets that have concluded
-@acquisitionTarget.route('/acquisitionTarget', methods=['GET'])
+@acquisitionTarget.route('/AcquisitionTarget', methods=['GET'])
 def get_alltargets():
     cursor = db.get_db().cursor()
     query = "select acq.Name AS acquirerName, st.Name AS StartUpName, at.status as Status, st.Industry, st.GrowthStage"
@@ -123,3 +149,31 @@ def get_alltargets():
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+# Get Industries
+@acquisitionTarget.route('/IndustryList', methods=['GET'])
+def get_industries():
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    query = 'SELECT * FROM IndustryList'
+
+    # use cursor to query the database for a list of targets
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
