@@ -32,9 +32,9 @@ CREATE TABLE Startup (
   GrowthStage VARCHAR(255),
   Industry VARCHAR(255),
   acqID INT,
-  FOREIGN KEY (acqID) REFERENCES Acquirers(acqID),
-  FOREIGN KEY (GrowthStage) REFERENCES GrowthStageList(growthStage),
-  FOREIGN KEY (Industry) REFERENCES  industryList(Industry)
+  FOREIGN KEY (acqID) REFERENCES Acquirers(acqID) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (GrowthStage) REFERENCES GrowthStageList(growthStage) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (Industry) REFERENCES  industryList(Industry) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE Document (
@@ -46,8 +46,8 @@ CREATE TABLE Document (
   characterCount INT,
   StartupID INT,
   FounderID INT,
-  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
-  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID)
+  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE
+  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE InvestmentOpportunities (
@@ -56,15 +56,15 @@ CREATE TABLE InvestmentOpportunities (
   Description TEXT,
   Terms TEXT,
   StartupID INT,
-  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
+  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE InvestmentOpportunityToVC (
     VCID  INT,
     OppID INT,
     PRIMARY KEY (VCID, OppID),
-    FOREIGN KEY (VCID) REFERENCES VentureCapitalist (VCID),
-    FOREIGN KEY (OppID) REFERENCES InvestmentOpportunities (OppID)
+    FOREIGN KEY (VCID) REFERENCES VentureCapitalist (VCID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (OppID) REFERENCES InvestmentOpportunities (OppID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE InvestmentAnalytics (
@@ -74,7 +74,7 @@ CREATE TABLE InvestmentAnalytics (
   PortfolioDiversity DECIMAL(19, 2),
   PerformanceMetric DECIMAL(19, 2),
   VCID INT,
-  FOREIGN KEY (VCID) REFERENCES VentureCapitalist(VCID)
+  FOREIGN KEY (VCID) REFERENCES VentureCapitalist(VCID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -83,7 +83,7 @@ CREATE TABLE FinancialMetrics (
   MetricTitle VARCHAR(255),
   MetricValue DECIMAL(19, 2),
   StartupID INT,
-  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
+  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -94,7 +94,7 @@ CREATE TABLE TeamMembers (
   PhoneNumber VARCHAR(20),
   Email VARCHAR(255),
   StartupID INT,
-  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
+  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -111,8 +111,8 @@ CREATE TABLE StartupFounder (
   StartupID INT,
   FounderID INT,
   PRIMARY KEY(StartupID, FounderID), 
-  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID),
-  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
+  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE AcquisitionTarget (
@@ -122,8 +122,8 @@ CREATE TABLE AcquisitionTarget (
   DateIdentified DATETIME DEFAULT CURRENT_TIMESTAMP,
   StartupID INT,
   acqID INT,
-  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID),
-  FOREIGN KEY (acqID) REFERENCES Acquirers(acqID)
+  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (acqID) REFERENCES Acquirers(acqID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE GeneralResearcher (
@@ -139,8 +139,8 @@ CREATE TABLE GeneralResearcherFollowing (
   StartupID INT,
   DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (researcherID, StartupID),
-  FOREIGN KEY (researcherID) REFERENCES GeneralResearcher(researcherID),
-  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
+  FOREIGN KEY (researcherID) REFERENCES GeneralResearcher(researcherID) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE Insights (
@@ -149,7 +149,7 @@ CREATE TABLE Insights (
   Content TEXT,
   Likes INT,
   GeneralResearcher INT,
-  FOREIGN KEY (GeneralResearcher) REFERENCES GeneralResearcher(researcherID)
+  FOREIGN KEY (GeneralResearcher) REFERENCES GeneralResearcher(researcherID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE InsightComments (
@@ -159,8 +159,8 @@ CREATE TABLE InsightComments (
   Likes INT,
   ViewCount INT,
   GeneralResearcher INT,
-  FOREIGN KEY (InsightID) REFERENCES Insights(InsightID),
-  FOREIGN KEY (GeneralResearcher) REFERENCES GeneralResearcher(researcherID)
+  FOREIGN KEY (InsightID) REFERENCES Insights(InsightID) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (GeneralResearcher) REFERENCES GeneralResearcher(researcherID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE FollowedDeals (
@@ -168,8 +168,8 @@ CREATE TABLE FollowedDeals (
   FollowerCount INT,
   OppID INT,
   researcherID INT,
-  FOREIGN KEY (OppID) REFERENCES InvestmentOpportunities(OppID),
-  FOREIGN KEY (researcherID) REFERENCES GeneralResearcher(researcherID)
+  FOREIGN KEY (OppID) REFERENCES InvestmentOpportunities(OppID) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (researcherID) REFERENCES GeneralResearcher(researcherID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- INSERT STATEMENTS BELOW

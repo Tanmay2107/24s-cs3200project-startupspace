@@ -28,6 +28,26 @@ def get_founder():
 
     return jsonify(json_data)
 
+# Gets a list of founderIDs
+@founder.route('/founderIDs', methods=['GET'])
+def get_founderIDs():
+    #get cursor object from database
+    cursor = db.get_db().cursor()
+
+    #use cursor to query the databse for a list of founders
+
+    cursor.execute('SELECT FounderID FROM Founder')
+
+    column_headers = [x[0] for x in cursor.description]
+
+    json_data = []
+
+    theData = cursor.fetchall()
+
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
 
 
 
@@ -57,6 +77,46 @@ def create_founder():
     
     return 'Success!'
 
+@founder.route('/founderStartUp/<founderID>', methods=['POST'])
+def create_startup(founderID):
+    
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    Name = the_data['Name']
+    City = the_data["City"]
+    GrowthStage = the_data["GrowthStage"]
+    Industry = the_data["Industry"]
+    acqID = the_data["acqID"]
+
+    if acqID is None:
+        acqID = "null"
+
+
+
+    # Constructing the query
+    query = 'insert into Startup (Name, City, GrowthStage, Industry, acqID) values ("'
+    query += Name + '", "'
+    query += City + '", "'
+    query += GrowthStage + '", "'
+    query += Industry + '", '
+    query += acqID + ')'
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    lastrowID = cursor.lastrowid
+
+    query1 = "insert into StartupFounder (StartupID, FounderID) values (" + str(lastrowID) + "," + str(founderID) + ")"
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query1)
+    db.get_db().commit()
+    
+    return 'Success!'
 
 @founder.route('/founder/<founder_id>', methods=['PUT'])
 def update_founder_detail(founder_id):
@@ -97,7 +157,7 @@ def get_founder_startup(founder_id):
     cursor = db.get_db().cursor()
 
     query = 'SELECT * FROM Startup WHERE StartupID IN (SELECT StartupID FROM StartupFounder WHERE StartupFounder.FounderID = '
-    query += founder_id + '")'
+    query += founder_id + ')'
 
     cursor.execute(query)
 

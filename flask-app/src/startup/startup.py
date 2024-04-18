@@ -74,13 +74,15 @@ def create_startup():
 
 
     # Constructing the query
-    query = 'insert into customers (Name, City, GrowthStage, Industry, acqID) values ("'
+    query = 'insert into startup (Name, City, GrowthStage, Industry, acqID) values ("'
     query += Name + '", "'
     query += City + '", "'
     query += GrowthStage + '", "'
     query += Industry + '", "'
     query += acqID + ')'
     current_app.logger.info(query)
+
+    
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
@@ -118,6 +120,18 @@ def update_startup_detail(StartupID):
     name = data['Name']
     startupID = str(StartupID)
     acqID = data['acqID']
+
+    if acqID is None:
+        acqID = 'NULL'
+
+    query = "UPDATE StartUp SET "
+    query = query + "Name = " + "'" + name + "',"
+    query = query + "City = " + "'" + city + "',"
+    query = query + "GrowthStage = " + "'" + growth_stage + "',"
+    query = query + "Industry = " + "'" + industry + "',"
+    query = query + "acqID = " + acqID +  " "
+    query = query + "WHERE StartupID =" + startupID
+    
 
 
 
