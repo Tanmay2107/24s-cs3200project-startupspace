@@ -158,7 +158,7 @@ def create_document(StartupID):
 
 
     # Constructing the query
-    query = 'insert into customers (documentType, fileSize, pageCount, wordCount, characterCount, StartupID) values ("'
+    query = 'insert into document (documentType, fileSize, pageCount, wordCount, characterCount, StartupID) values ("'
     query += documentType + '", "'
     query += fileSize + '", "'
     query += pageCount + '", "'

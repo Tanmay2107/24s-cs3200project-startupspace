@@ -45,7 +45,9 @@ CREATE TABLE Document (
   wordCount INT,
   characterCount INT,
   StartupID INT,
+  FounderID INT,
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
+  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID)
 );
 
 CREATE TABLE InvestmentOpportunities (
