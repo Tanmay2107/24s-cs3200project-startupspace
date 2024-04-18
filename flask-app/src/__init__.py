@@ -35,6 +35,7 @@ def create_app():
     # Import the various Beluprint Objects
 
     from src.acquisitionTarget.acquisitionTarget import acquisitionTarget
+    from src.founder.founder import founder
     from src.services.services import services
     from src.tracking.tracking  import tracking
     from src.startup.startup  import startup
@@ -45,6 +46,7 @@ def create_app():
     app.register_blueprint(tracking,    url_prefix='/t')
     app.register_blueprint(startup,    url_prefix='/s')
     app.register_blueprint(acquisitionTarget,    url_prefix='/at')
+    app.register_blueprint(founder, url_prefix='/f')
     #app.register_blueprint(insights, url_prefix="/in")
 
     # Don't forget to return the app object
