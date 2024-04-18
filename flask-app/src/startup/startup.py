@@ -91,9 +91,9 @@ def create_startup():
 
 
 @startup.route('/startup/<StartupID>', methods=['GET'])
-def get_startup_detail(id):
+def get_startup_detail(StartupID):
 
-    query = 'SELECT StartupID, Name, City, GrowthStage, Industry, acqID FROM products WHERE StartupID = ' + str(id)
+    query = 'SELECT StartupID, Name, City, GrowthStage, Industry, acqID FROM Startup WHERE StartupID = ' + str(StartupID)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -135,9 +135,9 @@ def update_startup_detail(startup_id):
 
 
 @startup.route('/startup/<StartupID>/document', methods=['GET'])
-def get_documents(startup_id):
+def get_documents(StartupID):
 
-    query = 'SELECT * FROM Document WHERE StartupID = ' + str(startup_id)
+    query = 'SELECT * FROM Document WHERE StartupID = ' + str(StartupID)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()

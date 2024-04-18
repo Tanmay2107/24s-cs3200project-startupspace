@@ -4,10 +4,10 @@ from src import db
 tracking = Blueprint('tracking', __name__)
 
 # Financial Metrics Routes
-@tracking.route('/financialMetrics/<int:startup_id>', methods=['GET'])
-def get_financial_metrics(startup_id):
+@tracking.route('/financialMetrics/<int:StartupID>', methods=['GET'])
+def get_financial_metrics(StartupID):
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT * FROM financial_metrics WHERE startup_id = %s', (startup_id,))
+    cursor.execute('SELECT * FROM FinancialMetrics WHERE StartupID = %s', (StartupID,))
     column_headers = [x[0] for x in cursor.description]
     json_data = []
     the_data = cursor.fetchall()
