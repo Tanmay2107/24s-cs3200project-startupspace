@@ -11,7 +11,7 @@ def get_aqctargets(acqid):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    query = 'SELECT at.acqID, s.Name, s.StartupID, at.DateIdentified, at.status, s.GrowthStage, s.Industry FROM  AcquisitionTarget as at JOIN Startup as s WHERE at.acqID = ' + str(acqid)
+    query = 'SELECT at.acqID, s.Name, s.StartupID, at.DateIdentified, at.status, s.GrowthStage, s.Industry, at.TargetID FROM  AcquisitionTarget as at JOIN Startup as s ON s.StartupID = at.StartupID WHERE at.acqID = ' + str(acqid)
 
     # use cursor to query the database for a list of targets
     cursor.execute(query)
