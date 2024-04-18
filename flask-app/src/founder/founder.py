@@ -92,40 +92,61 @@ def delete_founder(founder_id):
     return 'Metrics deleted', 204
 
 
-## These next few ones are to get the startup the founder is working at
-
-@founder.route('/founder/<int:StartupID>/documents', methods=['POST'])
-def create_document(StartupID):
-    # collecting data from the request object 
-    the_data = request.json
-    current_app.logger.info(the_data)
-
-    #extracting the variable
-    documentType = the_data['documentType']
-    fileSize = the_data["fileSize"]
-    pageCount = the_data["pageCount"]
-    wordCount = the_data["wordCount"]
-    characterCount = the_data["characterCount"]
-    startupID = StartupID
-
-
-
-    # Constructing the query
-    query = 'insert into customers (documentType, fileSize, pageCount, wordCount, characterCount, StartupID) values ("'
-    query += documentType + '", "'
-    query += fileSize + '", "'
-    query += pageCount + '", "'
-    query += wordCount + '", "'
-    query += characterCount + '", "'
-    query += startupID + ')'
-    current_app.logger.info(query)
-
-    # executing and committing the insert statement 
+@founder.route('/founder/<founder_id>/startup/', method = ['GET'])
+def get_founder_startup(founder_id):
     cursor = db.get_db().cursor()
+
+    query = 'SELECT * FROM Startup WHERE StartupID IN (SELECT StartupID FROM StartupFounder WHERE StartupFounder.FounderID = '
+    query += founder_id
+
     cursor.execute(query)
-    db.get_db().commit()
+
+    column_headers = [x[0] for x in cursor.description]
+
+    json_data = []
+
+    the_data = cursor.fetchall()
+
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+
+# ## These next few ones are to get the startup the founder is working at
+
+# @founder.route('/founder/<int:StartupID>/documents', methods=['POST'])
+# def create_document(StartupID):
+#     # collecting data from the request object 
+#     the_data = request.json
+#     current_app.logger.info(the_data)
+
+#     #extracting the variable
+#     documentType = the_data['documentType']
+#     fileSize = the_data["fileSize"]
+#     pageCount = the_data["pageCount"]
+#     wordCount = the_data["wordCount"]
+#     characterCount = the_data["characterCount"]
+#     startupID = StartupID
+
+
+
+#     # Constructing the query
+#     query = 'insert into Document (documentType, fileSize, pageCount, wordCount, characterCount, StartupID) values ("'
+#     query += documentType + '", "'
+#     query += fileSize + '", "'
+#     query += pageCount + '", "'
+#     query += wordCount + '", "'
+#     query += characterCount + '", "'
+#     query += startupID + ')'
+#     current_app.logger.info(query)
+
+#     # executing and committing the insert statement 
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     db.get_db().commit()
     
-    return 'Success!'
+#     return 'Success!'
 
 
 
