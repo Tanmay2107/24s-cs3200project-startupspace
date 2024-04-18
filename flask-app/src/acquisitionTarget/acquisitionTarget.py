@@ -11,7 +11,7 @@ def get_aqctargets(acqid):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    query = 'SELECT at.acqID, s.Name, s.StartupID, at.DateIdentified, at.status, s.GrowthStage, s.Industry FROM  AcquisitionTarget as at JOIN Startup as s WHERE at.acqID = ' + str(acqid)
+    query = 'SELECT at.acqID, s.Name, s.StartupID, at.DateIdentified, at.status, s.GrowthStage, s.Industry, at.TargetID FROM  AcquisitionTarget as at JOIN Startup as s ON s.StartupID = at.StartupID WHERE at.acqID = ' + str(acqid)
 
     # use cursor to query the database for a list of targets
     cursor.execute(query)
@@ -95,13 +95,11 @@ def update_aqctargets(targetID):
     cursor = db.get_db().cursor()
     the_data = request.json
     status = the_data['status']
-    interested = the_data['status']
 
 
 
-    query = "UPDATE AcquisitionTarget SET "
-    query = query + "status = "+ "'" + status + "', "
-    query = query + "interested = "+ "'" + interested + "' "
+
+    query = "UPDATE AcquisitionTarget SET status = "+ "'" + status + "' "
     query = query + "WHERE targetID = " + str(targetID)
 
 
@@ -177,3 +175,21 @@ def get_industries():
         json_data.append(dict(zip(column_headers, row)))
 
     return jsonify(json_data)
+
+
+
+#gets all startups open to be acquired
+@acquisitionTarget.route('/startupsToAcquire', methods=['GET'])
+def get_startupsToAcquire():
+    cursor = db.get_db().cursor()
+    query = "SELECT   StartupID , Name ,City,GrowthStage , Industry  FROM Startup where acqID IS NUll"
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
