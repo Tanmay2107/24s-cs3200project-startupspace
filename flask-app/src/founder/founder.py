@@ -92,7 +92,7 @@ def delete_founder(founder_id):
     return 'Metrics deleted', 204
 
 
-@founder.route('/founder/<founder_id>/startup/', method = ['GET'])
+@founder.route('/founder/<founder_id>/startup/', methods = ['GET'])
 def get_founder_startup(founder_id):
     cursor = db.get_db().cursor()
 
