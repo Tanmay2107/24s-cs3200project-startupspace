@@ -31,6 +31,31 @@ def get_startup():
 
     return jsonify(json_data)
 
+# Get all the products from the database
+@startup.route('/startupID', methods=['GET'])
+def get_startupID():
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+
+    cursor.execute('SELECT StartupID FROM Startup')
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
 
 
 @startup.route('/startup', methods=['POST'])
@@ -83,30 +108,21 @@ def get_startup_detail(id):
 
 
 @startup.route('/startup/<StartupID>', methods=['PUT'])
-def update_startup_detail(startup_id):
+def update_startup_detail(StartupID):
     
     data = request.json
-    current_app.logger.info(f"Update request for StartupID {startup_id} with data: {data}")
+    current_app.logger.info(f"Update request for StartupID {StartupID} with data: {data}")
+    city = data['City']
+    growth_stage = data['GrowthStage']
+    industry = data['Industry']
+    name = data['Name']
+    startupID = str(StartupID)
+    acqID = data['acqID']
 
-    try:
-        startup = startup.query.get(startup_id)
-        if not startup:
-            return jsonify({"error": "Startup not found"}), 404
 
-        # Update fields from JSON data if available
-        startup.Name = data.get('Name', startup.Name)
-        startup.City = data.get('City', startup.City)
-        startup.GrowthStage = data.get('GrowthStage', startup.GrowthStage)
-        startup.Industry = data.get('Industry', startup.Industry)
-        startup.acqID = data.get('acqID', startup.acqID)
 
-        db.session.commit()  # Commit the changes to the database
-        return jsonify({"success": "Startup details updated successfully"}), 200
 
-    except Exception as e:
-        current_app.logger.error(f"Error updating startup: {e}")
-        db.session.rollback()
-        return jsonify({"error": "Failed to update startup details"}), 500
+    return 'Success!'
 
 
 @startup.route('/startup/<StartupID>/document', methods=['GET'])
@@ -158,7 +174,7 @@ def create_document(StartupID):
 
 
     # Constructing the query
-    query = 'insert into customers (documentType, fileSize, pageCount, wordCount, characterCount, StartupID) values ("'
+    query = 'insert into document (documentType, fileSize, pageCount, wordCount, characterCount, StartupID) values ("'
     query += documentType + '", "'
     query += fileSize + '", "'
     query += pageCount + '", "'
