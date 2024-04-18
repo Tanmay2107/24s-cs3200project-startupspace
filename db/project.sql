@@ -45,7 +45,9 @@ CREATE TABLE Document (
   wordCount INT,
   characterCount INT,
   StartupID INT,
+  FounderID INT,
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID)
+  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID)
 );
 
 CREATE TABLE InvestmentOpportunities (
@@ -150,7 +152,7 @@ CREATE TABLE Insights (
   FOREIGN KEY (GeneralResearcher) REFERENCES GeneralResearcher(researcherID)
 );
 
-CREATE TABLE InsightsComments (
+CREATE TABLE InsightComments (
   commentID INT AUTO_INCREMENT PRIMARY KEY,
   InsightID INT,
   Content TEXT,
