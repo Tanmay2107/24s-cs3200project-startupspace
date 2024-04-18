@@ -8,7 +8,7 @@ insights = Blueprint('insights', __name__)
 @insights.route('/insights', methods=['GET'])
 def get_insights():
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT Insight_ID, Date Created, Content, Engagement FROM Insights')
+    cursor.execute('SELECT Insight_ID, DateCreated, Content, Likes FROM Insights')
     row_headers = [x[0] for x in cursor.description] 
     rv = cursor.fetchall()
     return jsonify([dict(zip(row_headers, row)) for row in rv])
