@@ -41,7 +41,10 @@ Our Flask API contains routes for four different personas: The founder, venture 
   * sesdfsdf
 
 * Acquirer: *
-  * sdfsdf
+  * Track startups
+  * Update deal status details for a selected tracked startup
+  * Explore acquisition targets (startups) and add new targets to the tracked deal table
+  * View company details for selected startups for further research
  
 * General Researcher: *
   * sdfsdfs
