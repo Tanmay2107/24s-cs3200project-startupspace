@@ -108,30 +108,21 @@ def get_startup_detail(id):
 
 
 @startup.route('/startup/<StartupID>', methods=['PUT'])
-def update_startup_detail(startup_id):
+def update_startup_detail(StartupID):
     
     data = request.json
-    current_app.logger.info(f"Update request for StartupID {startup_id} with data: {data}")
+    current_app.logger.info(f"Update request for StartupID {StartupID} with data: {data}")
+    city = data['City']
+    growth_stage = data['GrowthStage']
+    industry = data['Industry']
+    name = data['Name']
+    startupID = str(StartupID)
+    acqID = data['acqID']
 
-    try:
-        startup = startup.query.get(startup_id)
-        if not startup:
-            return jsonify({"error": "Startup not found"}), 404
 
-        # Update fields from JSON data if available
-        startup.Name = data.get('Name', startup.Name)
-        startup.City = data.get('City', startup.City)
-        startup.GrowthStage = data.get('GrowthStage', startup.GrowthStage)
-        startup.Industry = data.get('Industry', startup.Industry)
-        startup.acqID = data.get('acqID', startup.acqID)
 
-        db.session.commit()  # Commit the changes to the database
-        return jsonify({"success": "Startup details updated successfully"}), 200
 
-    except Exception as e:
-        current_app.logger.error(f"Error updating startup: {e}")
-        db.session.rollback()
-        return jsonify({"error": "Failed to update startup details"}), 500
+    return 'Success!'
 
 
 @startup.route('/startup/<StartupID>/document', methods=['GET'])

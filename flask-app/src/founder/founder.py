@@ -97,7 +97,7 @@ def get_founder_startup(founder_id):
     cursor = db.get_db().cursor()
 
     query = 'SELECT * FROM Startup WHERE StartupID IN (SELECT StartupID FROM StartupFounder WHERE StartupFounder.FounderID = '
-    query += founder_id
+    query += founder_id + '")'
 
     cursor.execute(query)
 
