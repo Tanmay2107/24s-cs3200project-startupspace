@@ -1,5 +1,8 @@
 # StartupSpace
 
+### IMPORTANT
+We had some serious issues merging/pulling on appsmith so in the end we had to redo all our work on one computer. **We've included a link to the json file in our submission pdf which can be loaded in appsmith once the docker containers are running.** Thanks!
+
 90% of startups fail, many simply because of a lack of cash on hand to fund growth. Startup founders rely heavily on bootstrapping their companies or building industry connections to find stabile funding, which is never easy to do. StartupSpace helps ease the pains of fundraising through a comprehensive platform that helps connect startups to investors. On the platform, startups can provide financial and strategic information to investors, creating awareness about their company. Investors can use this information to scout their next target and build an in house tracker to monitor their deal flow. The platform is also open to university researchers who can view closed deals, read public information on investors and startups, and publish insights to the platform for others to read. The platform's user personas are summarized below:
 
   1. Founder: The founder of a given startup. 
@@ -63,6 +66,4 @@ Our Flask API contains routes for four different personas: The founder, venture 
   * Create, update, delete insights
   * Create comments for a specific insight
 
-# IMPORTANT
-We had some serious issues merging/pulling on appsmith so in the end we had to redo all our work on one computer. **We've included a link to the json file in our submission pdf which can be loaded in appsmith once the docker containers are running.** Thanks!
 
