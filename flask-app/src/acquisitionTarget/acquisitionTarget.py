@@ -116,12 +116,7 @@ def update_aqctargets(targetID):
 def delete_aqctarget(targetID):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
-    the_data = request.json
-
-
-
-
-    query = "DELETE FROM AcquisitionTarget WHERE TargetID = " + str(targetID)
+    query = "DELETE FROM AcquisitionTarget WHERE targetID = " + str(targetID)
 
     # use cursor to query the database for a list of targets
     cursor.execute(query)

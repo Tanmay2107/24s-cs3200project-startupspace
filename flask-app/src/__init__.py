@@ -47,7 +47,7 @@ def create_app():
     app.register_blueprint(startup,    url_prefix='/s')
     app.register_blueprint(acquisitionTarget,    url_prefix='/at')
     app.register_blueprint(founder, url_prefix='/f')
-    #app.register_blueprint(insights, url_prefix="/in")
+    app.register_blueprint(insights, url_prefix="/in")
 
     # Don't forget to return the app object
     return app

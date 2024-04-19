@@ -90,8 +90,8 @@ def create_startup(founderID):
     Industry = the_data["Industry"]
     acqID = the_data["acqID"]
 
-    if acqID is None:
-        acqID = "null"
+    if not acqID:
+        acqID = "NULL"
 
 
 

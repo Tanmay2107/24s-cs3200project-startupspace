@@ -176,7 +176,7 @@ def get_documents1(startup_id, docID):
     return jsonify(json_data)
 
 
-@startup.route('/startup/<int:StartupID>/documents', methods=['POST'])
+@startup.route('/startup/<StartupID>/document', methods=['POST'])
 def create_document(StartupID):
     # collecting data from the request object 
     the_data = request.json
@@ -188,17 +188,17 @@ def create_document(StartupID):
     pageCount = the_data["pageCount"]
     wordCount = the_data["wordCount"]
     characterCount = the_data["characterCount"]
-    startupID = StartupID
+    startupID = str(StartupID)
 
 
 
     # Constructing the query
-    query = 'insert into document (documentType, fileSize, pageCount, wordCount, characterCount, StartupID) values ("'
+    query = 'insert into Document (documentType, fileSize, pageCount, wordCount, characterCount, StartupID) values ("'
     query += documentType + '", "'
-    query += fileSize + '", "'
-    query += pageCount + '", "'
-    query += wordCount + '", "'
-    query += characterCount + '", "'
+    query += str(fileSize) + '", "'
+    query += str(pageCount) + '", "'
+    query += str(wordCount) + '", "'
+    query += str(characterCount) + '", '
     query += startupID + ')'
     current_app.logger.info(query)
 
@@ -224,7 +224,7 @@ def delete_startup(StartupID):
 @startup.route('/startup/<StartupID>/documents/<docID>', methods=['DELETE'])
 def delete_document(docID):
     cursor = db.get_db().cursor()
-    query = 'DELETE FROM Documents WHERE docID = ' + str(docID)
+    query = 'DELETE FROM Document WHERE docID = ' + str(docID)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -273,15 +273,15 @@ def add_new_member(StartupID):
     PhoneNumber = the_data['PhoneNumber']
     Name = the_data['Name']
     Email = the_data['Email']
-    StartupID=StartupID
+    # StartupID=StartupID
 
 
     # Constructing the query
-    query = 'insert into customers (PhoneNumber, Name, StartupID, Email) values ("'
+    query = 'insert into TeamMembers (PhoneNumber, Name, StartupID, Email) values ("'
     query += PhoneNumber + '", "'
     query += Name + '", "'
     query += StartupID + '", "'
-    query += Email + ')'
+    query += Email + '")'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
