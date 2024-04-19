@@ -37,6 +37,15 @@ CREATE TABLE Startup (
   FOREIGN KEY (Industry) REFERENCES  industryList(Industry)
 );
 
+CREATE TABLE Founder (
+  FounderID INT AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(255),
+  PhoneNumber VARCHAR(20),
+  NumberOfCompanies INT,
+  CredibilityRanking DECIMAL(19, 2)
+
+);
+
 CREATE TABLE Document (
   docID INT AUTO_INCREMENT PRIMARY KEY,
   documentType VARCHAR(255),
@@ -47,7 +56,7 @@ CREATE TABLE Document (
   StartupID INT,
   FounderID INT,
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID) ON UPDATE CASCADE ON DELETE CASCADE -- do we need this ?
+  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE InvestmentOpportunities (
@@ -98,19 +107,10 @@ CREATE TABLE TeamMembers (
 );
 
 
-CREATE TABLE Founder (
-  FounderID INT AUTO_INCREMENT PRIMARY KEY,
-  Name VARCHAR(255),
-  PhoneNumber VARCHAR(20),
-  NumberOfCompanies INT,
-  CredibilityRanking DECIMAL(19, 2)
-
-);
-
 CREATE TABLE StartupFounder (
   StartupID INT,
   FounderID INT,
-  PRIMARY KEY(StartupID, FounderID), 
+  PRIMARY KEY(StartupID, FounderID),
   FOREIGN KEY (FounderID) REFERENCES Founder(FounderID) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE
 );
