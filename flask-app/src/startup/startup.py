@@ -111,6 +111,8 @@ def get_startup_detail(StartupID):
 
 @startup.route('/startup/<StartupID>', methods=['PUT'])
 def update_startup_detail(StartupID):
+
+    cursor = db.get_db().cursor()
     
     data = request.json
     current_app.logger.info(f"Update request for StartupID {StartupID} with data: {data}")
@@ -124,19 +126,22 @@ def update_startup_detail(StartupID):
     if acqID is None:
         acqID = 'NULL'
 
-    query = "UPDATE StartUp SET "
+    query = "UPDATE Startup SET "
     query = query + "Name = " + "'" + name + "',"
     query = query + "City = " + "'" + city + "',"
     query = query + "GrowthStage = " + "'" + growth_stage + "',"
     query = query + "Industry = " + "'" + industry + "',"
     query = query + "acqID = " + acqID +  " "
     query = query + "WHERE StartupID =" + startupID
-    
+
+    cursor.execute(query)
+
+    db.get_db().commit()
+
+    updated_startup_detail = cursor.lastrowid
 
 
-
-
-    return 'Success!'
+    return jsonify({"startupID": updated_startup_detail}), 201
 
 
 @startup.route('/startup/<StartupID>/document', methods=['GET'])
@@ -204,19 +209,27 @@ def create_document(StartupID):
     
     return 'Success!'
 
+@startup.route('/startup/<StartupID>', methods=['DELETE'])
+def delete_startup(StartupID):
+    cursor = db.get_db().cursor()
+    query = 'DELETE FROM Startup WHERE StartupID = ' + str(StartupID)
+    current_app.logger.info(query)
+    print(query)
+    cursor.execute(query)
+    db.get_db().commit()
+    return query
+
+
+
 @startup.route('/startup/<StartupID>/documents/<docID>', methods=['DELETE'])
 def delete_document(docID):
+    cursor = db.get_db().cursor()
     query = 'DELETE FROM Documents WHERE docID = ' + str(docID)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    column_headers = [x[0] for x in cursor.description]
-    json_data = []
-    the_data = cursor.fetchall()
-    for row in the_data:
-        json_data.append(dict(zip(column_headers, row)))
-    return jsonify(json_data)
+    return 'Document Deleted'
 
 
 
