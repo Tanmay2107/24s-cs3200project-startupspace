@@ -36,10 +36,17 @@ The database also includes the following tables that store lists of values or so
 Our Flask API contains routes for four different personas: The founder, venture capitalist, acquirer, and general researcher. They each have the following features:
 
 **Founder:**
-  * sefsdf
+  * View the startups that have been founded by the founder.
+  * Update any details regarding any of the startups
+  * Delete a startup made by the founder
+  * Add an new startup
+  * Add documents and financial metrics for any of their startups
 
 **Venture Capitalist:**
-  * sesdfsdf
+  * View venture capitalist profile
+  * View investment analytics
+  * View view startup information including financial metrics, uploaded documents, team members etc.
+  * View & edit current investment opportunities
 
 **Acquirer:**
   * Track startups
@@ -48,7 +55,13 @@ Our Flask API contains routes for four different personas: The founder, venture 
   * View company details for selected startups for further research
  
 **General Researcher:**
-  * sdfsdfs
+  * View all general researchers
+  * View all insights
+  * View insights made by a specific researcher through a dropdown
+  * View a specific deal a researcher is following
+  * View the comments of a specific insight (through row selection)
+  * Create, update, delete insights
+  * Create comments for a specific insight
  
 # Docker Compose
 
