@@ -21,8 +21,8 @@ CREATE TABLE Acquirers (
 );
 
 CREATE TABLE GrowthStageList ( -- What is this column for?
-    growthStage VARCHAR(255),
-    PRIMARY KEY (growthStage)
+    GrowthStage VARCHAR(255),
+    PRIMARY KEY (GrowthStage)
 );
 
 CREATE TABLE Startup (
@@ -33,8 +33,8 @@ CREATE TABLE Startup (
   Industry VARCHAR(255),
   acqID INT,
   FOREIGN KEY (acqID) REFERENCES Acquirers(acqID) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (GrowthStage) REFERENCES GrowthStageList(growthStage) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (Industry) REFERENCES  industryList(Industry) ON UPDATE CASCADE ON DELETE CASCADE
+  FOREIGN KEY (GrowthStage) REFERENCES GrowthStageList(GrowthStage),
+  FOREIGN KEY (Industry) REFERENCES  industryList(Industry)
 );
 
 CREATE TABLE Document (
@@ -46,8 +46,8 @@ CREATE TABLE Document (
   characterCount INT,
   StartupID INT,
   FounderID INT,
-  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE
-  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID) ON UPDATE CASCADE ON DELETE CASCADE
+  FOREIGN KEY (StartupID) REFERENCES Startup(StartupID) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (FounderID) REFERENCES Founder(FounderID) ON UPDATE CASCADE ON DELETE CASCADE -- do we need this ?
 );
 
 CREATE TABLE InvestmentOpportunities (

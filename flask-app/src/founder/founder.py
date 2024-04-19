@@ -149,7 +149,7 @@ def delete_founder(founder_id):
     cursor = db.get_db().cursor()
     cursor.execute('DELETE FROM Founder WHERE founderId = %s', (founder_id))
     db.get_db().commit()
-    return 'Metrics deleted', 204
+    return 'Founder deleted', 204
 
 
 @founder.route('/founder/<founder_id>/startup/', methods = ['GET'])
