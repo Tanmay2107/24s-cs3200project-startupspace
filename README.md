@@ -62,13 +62,7 @@ Our Flask API contains routes for four different personas: The founder, venture 
   * View the comments of a specific insight (through row selection)
   * Create, update, delete insights
   * Create comments for a specific insight
- 
-# Docker Compose
 
-To start the application: build the images with docker compose build. Start the containers with docker compose up. To run in detached mode, run docker compose up -d.
-
-# AppSmith
-Appsmith functions as our front end. It takes in the data from the personas, which grabs our information from our VS Code and Datagrip to display in the front end.
-
-# Link to Walkthrough
+# IMPORTANT
+We had some serious issues merging/pulling on appsmith so in the end we had to redo all our work on one computer. We've attached the json file to load our app to the gradescope submission which can be loaded in appsmith once the docker containers are running. Thanks!
 
