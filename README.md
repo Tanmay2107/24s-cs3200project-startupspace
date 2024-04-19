@@ -64,5 +64,5 @@ Our Flask API contains routes for four different personas: The founder, venture 
   * Create comments for a specific insight
 
 # IMPORTANT
-We had some serious issues merging/pulling on appsmith so in the end we had to redo all our work on one computer. We've attached the json file to load our app to the gradescope submission which can be loaded in appsmith once the docker containers are running. Thanks!
+We had some serious issues merging/pulling on appsmith so in the end we had to redo all our work on one computer. **We've included a link to the json file in our submission pdf which can be loaded in appsmith once the docker containers are running.** Thanks!
 
