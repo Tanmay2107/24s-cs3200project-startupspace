@@ -66,4 +66,4 @@ Our Flask API contains routes for four different personas: The founder, venture 
   * Create, update, delete insights
   * Create comments for a specific insight
 
-
+Video link: https://youtu.be/hGxannd-XVY
